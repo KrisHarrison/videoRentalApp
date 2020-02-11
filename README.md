@@ -1,5 +1,7 @@
 Laguages: JavaScript, HTML, CSS
+
 Libraries: React, Bootstrap
+
 Packages: Axios, Lodash
 
 This is a movie rental app that allows you to add, delete, update and create a movie record.
