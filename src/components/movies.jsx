@@ -4,12 +4,13 @@ import MoviesTable from './moviesTable';
 import Pagination from'./common/pagination';
 import Genre from './common/filter';
 import SearchBox from './common/searchBox'
-import {getMovies, deleteMovie} from './services/fakeMovieService';
+import {getMovies, deleteMovie} from './services/movieService';
 import {getGenres} from './services/genreService';
 import {paginate} from '../utils/paginate';
-
-import '../App.css';
 import _ from 'lodash';
+import '../App.css';
+
+
 
 class Movies extends Component {
       state = { 
@@ -23,24 +24,30 @@ class Movies extends Component {
       };
 
     async componentDidMount(){
-  
-      let genres = [{_id:"",name: 'All Genres'}, getGenres()]
-      this.setState({movies:getMovies(), genres});
+      const {data} = await getGenres();
+      let genres = [{_id:"",name: 'All Genres'}, ...data]
+
+      const {data:movies} = await getMovies();
+
+      this.setState({movies, genres});
     }
 
-    deleteMovieHandler = (movie)=>{
-        let movieId = movie._id;
-        deleteMovie(movieId);
+    deleteMovieHandler  = async (movie)=>{
+       const originalMovies = this.state.movies;
 
-        let deleted_movie = movie;
-
-        let deleted_movie_index = this.state.movies.findIndex(movie=>{
-          return movie._id === deleted_movie._id;    
+        let movies = originalMovies.findIndex(m=>{
+          return m._id !== movie._id;    
         });
-        
 
-        this.state.movies.splice(deleted_movie_index, 1);
-        this.setState({movies:this.state.movies})
+        this.setState({movies})
+
+        try{
+          await deleteMovie(movie._id);
+        }
+        catch(ex){
+          this.setState({movies:originalMovies});
+        }
+        
     };
 
     handleLike = (movie) =>{
@@ -58,6 +65,7 @@ class Movies extends Component {
     }
 
     handleFilter = (genre) =>{
+      console.log("Genre: ", genre);
        this.setState({currentGenre:genre, searchQuery: "", currentPage: 1});
       
        
@@ -80,25 +88,19 @@ class Movies extends Component {
         searchQuery,
         sortColumn
       } = this.state;
-        
-     //let filteredMovies = allMovies
 
-      
      let  filteredMovies = allMovies;
 
-     
-
-      if(searchQuery)
+      if(searchQuery){
           filteredMovies = allMovies.filter(m=>
             m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
           );
+      }
+      else if(currentGenre && currentGenre._id){
+          filteredMovies = allMovies.filter(movie=>movie.genre._id === currentGenre._id);
+      }
       
-      else if(currentGenre && currentGenre._id)
-          filteredMovies = allMovies.filter(movie=> movie.genre._id === currentGenre._id);
       
-      
-      
-
       let sorted = _.orderBy(filteredMovies, [sortColumn.path], [sortColumn.order]);
 
       let movies = paginate(sorted, currentPage, pageSize);
@@ -115,7 +117,6 @@ class Movies extends Component {
             sortColumn, 
             searchQuery
           } = this.state;
-        
         
         const {totalCount, data: movies}= this.getPageData();
         
