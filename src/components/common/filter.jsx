@@ -8,7 +8,7 @@ const Genre = ({getGenres:genres, onFilter, currentGenre, textProperty, valuePro
             <ul className="list-group" style={{float:"right", verticalAlign:"top"}}>
 
                 {genres.map(genre =>(
-                    <a  key={genre[valueProperty]} onClick={()=>onFilter(genre)}>
+                    <a  key={genre[valueProperty]} href="\#" onClick={()=>onFilter(genre)}>
                         
                         <li
                             className={genre[textProperty] === currentGenre?"list-group-item active":"list-group-item"} 

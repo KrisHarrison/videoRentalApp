@@ -35,11 +35,11 @@ class Movies extends Component {
     deleteMovieHandler  = async (movie)=>{
        const originalMovies = this.state.movies;
 
-        let movies = originalMovies.findIndex(m=>{
+        let movies = originalMovies.filter(m=>{
           return m._id !== movie._id;    
         });
 
-        this.setState({movies})
+        this.setState({ movies })
 
         try{
           await deleteMovie(movie._id);
@@ -119,6 +119,8 @@ class Movies extends Component {
           } = this.state;
         
         const {totalCount, data: movies}= this.getPageData();
+        const {user} = this.props;
+
         
         if(totalCount === 0)return <p>There are no movies in the database</p>
        
@@ -133,11 +135,13 @@ class Movies extends Component {
                     </Genre>
                   </div>
                     <div className="col-5">
-                        <Link 
+                        {user && 
+                        (<Link 
                               to='/movies/new'
                               className="btn btn-primary" 
                               >New Movie
                         </Link>
+                        )}
                         <p>Showing {totalCount} movies in the database</p>
                         <SearchBox value={searchQuery} onChange={this.handleSearch}></SearchBox>
                         <MoviesTable 
