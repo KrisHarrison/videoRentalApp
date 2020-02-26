@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from './common/form';
-import {getGenres} from './services/genreService';
-import {getMovie, saveMovie} from './services/movieService';
+import {getGenres} from '../services/genreService';
+import {getMovie, saveMovie} from '../services/movieService';
 import Joi from 'joi-browser';
 
 class MovieForm extends Form {
@@ -73,7 +73,7 @@ class MovieForm extends Form {
     };
 
     render() { 
-        let {genres} = this.state
+        let {genres} = this.statem
         return ( 
             <div className="container">
                 <h1>Movie</h1>

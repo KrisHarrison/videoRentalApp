@@ -11,7 +11,7 @@ import LoginForm from './components/loginForm';
 import RegisterForm from './components/registerForm';
 import Logout from './components/logout';
 import ProtectedRoute from './components/common/protectedRoute';
-import auth from './components/services/authService';
+import auth from './services/authService';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
 

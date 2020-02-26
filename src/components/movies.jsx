@@ -4,11 +4,12 @@ import MoviesTable from './moviesTable';
 import Pagination from'./common/pagination';
 import Genre from './common/filter';
 import SearchBox from './common/searchBox'
-import {getMovies, deleteMovie} from './services/movieService';
-import {getGenres} from './services/genreService';
+import {getMovies, deleteMovie} from '../services/movieService';
+import {getGenres} from '../services/genreService';
 import {paginate} from '../utils/paginate';
 import _ from 'lodash';
 import '../App.css';
+import '../css/style.css'
 
 
 
