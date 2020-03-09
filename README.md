@@ -1,6 +1,6 @@
 Laguages: JavaScript, HTML, CSS
 
-Libraries: React, Bootstrap
+Libraries: React, Bootstrap, Node.js
 
 Packages: Axios, Lodash, JOI
 
